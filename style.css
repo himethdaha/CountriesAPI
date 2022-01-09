@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -8,27 +9,27 @@ html {
 }
 
 .container {
-  max-width: 120rem;
-  margin: 15rem 12rem;
+  margin: 15rem 25rem;
+  display: flex;
+  gap: 3.2rem;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
 }
 
-.grid-2-col {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 3.2rem;
+.country {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  width: 20%;
+  transition: all 0.5s;
+  /* border: 1px solid #868e96; */
+  box-shadow: 3px 1px 2px 2px rgba(0, 0, 0, 0.247);
 }
 
-.country-1 {
-  grid-column: 1;
-  box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.541);
-}
-.country-2 {
-  grid-column: 2;
-  box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.541);
-}
-
-.flag-container {
-  border-radius: 50%;
+.country:hover {
+  cursor: pointer;
+  transform: translateY(-10px);
+  box-shadow: 3px 1px 2px 2px rgba(0, 0, 0, 0.541);
 }
 
 .country-info {
@@ -37,9 +38,11 @@ html {
   align-items: flex-start;
   gap: 1rem;
   margin-top: 2rem;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
 }
 
-.country {
+.country-name {
   font-size: 3.2rem;
   font-weight: 500;
 }
@@ -48,6 +51,28 @@ html {
   font-size: 1.6rem;
 }
 
+.flag-div {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.363);
+}
+.flag {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  width: 100%;
+}
+
 .fax {
   font-size: 1.8rem;
+}
+
+.country-form {
+  border: 1px solid rgba(0, 0, 0, 0.349);
+  padding: 2.4rem 3.2rem;
+  font-size: 2.4rem;
+  display: inline-block;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.emoji {
+  font-size: 2.4rem;
 }
