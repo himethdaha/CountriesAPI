@@ -76,3 +76,46 @@ html {
 .emoji {
   font-size: 2.4rem;
 }
+.country-neighbor {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  width: 15%;
+  transition: all 0.5s;
+  /* border: 1px solid #868e96; */
+  box-shadow: 3px 1px 2px 2px rgba(0, 0, 0, 0.247);
+}
+
+.country-neighbor:hover {
+  cursor: pointer;
+  transform: translateY(-7px);
+  box-shadow: 2px 0.5px 1px 1px rgba(0, 0, 0, 0.541);
+}
+.flag-div-neighbor {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.363);
+}
+.country-info-neighbor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-left: 1rem;
+}
+.country-info-neighbor span {
+  font-size: 1.6rem;
+}
+
+.country-name-neighbor:after {
+  content: "Neighboring Country";
+  background-color: #495057;
+  color: #fff;
+  font-size: 9px;
+  margin-left: 10px;
+  padding: 4px;
+}
+
+.country-name-neighbor {
+  font-size: 2rem;
+  font-weight: 500;
+}
