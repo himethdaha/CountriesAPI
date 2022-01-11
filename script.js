@@ -43,8 +43,55 @@ checkCountry.addEventListener("click", function () {
                   <p><span class="emoji">🧑🏼‍🤝‍🧑🏽</span><span class="population fax">${(
                     destdata.population / 1000000
                   ).toFixed(2)}M</span></p>
+                  <p><span class="emoji">🚩</span><span class="capital fax">${
+                    destdata.capital
+                  }</span></p>
                   <p><span class="emoji">🗣️</span><span class="language fax">${languages}</span></p>
                   <p><span class="emoji">💰</span><span class="currency fax">${currencies}</span></p>
+              </div>
+              </div>`;
+
+    //Insert html into the container
+    containerForCountries.insertAdjacentHTML("beforeend", html);
+  };
+
+  //   //Function to display the neighboring country
+  const renderNeighbor = function (data) {
+    //Destructing the data obj
+    const [destdata] = data;
+    //Values from the request
+    const languages = Object.values(destdata.languages);
+    const currencies = Object.values(destdata.currencies).map(
+      (curr) => curr.name
+    );
+
+    //Adding the html for the country
+    const html = `
+              <div class="country-neighbor">
+              <div class="flag-div-neighbor">
+                  <img
+                  src="${destdata.flags.svg}"
+                  alt=""
+                  class="flag"
+                  />
+              </div>
+              <div class="country-info-neighbor">
+                  <span class="country-name-neighbor">${
+                    destdata.name.common
+                  }</span>
+                  <span class="continent">${destdata.continents}</span>
+                  <p><span class="emoji">🧑🏼‍🤝‍🧑🏽</span><span class="population fax">${(
+                    destdata.population / 1000000
+                  ).toFixed(2)}M</span></p>
+                  <p><span class="emoji">🚩</span><span class="capital fax">${
+                    destdata.capital
+                  }</span></p>
+                  <p><span class="emoji">🗣️</span><span class="language fax">${
+                    languages[0]
+                  }</span></p>
+                  <p><span class="emoji">💰</span><span class="currency fax">${
+                    currencies[0].name
+                  }</span></p>
               </div>
               </div>`;
 
@@ -59,55 +106,32 @@ checkCountry.addEventListener("click", function () {
     //This returns a promise
     fetch(`https://restcountries.com/v3.1/name/${country}`)
       .then(function (response) {
-        console.log(response);
         //To read the response use JSON. which also returns a promise
         return response.json();
       })
       //Since the json methodreturns a promise I can use 'then' on the entire callback function
 
       .then(function (data) {
-        console.log(data);
         renderCountry(data);
+        //Get the neighboring country from the array of objs
+        const neighbor = data[0].borders[0];
+        if (!neighbor) return;
+
+        //Return the neighboring country
+        return fetch(`https://restcountries.com/v3.1/alpha/${neighbor}`);
+      })
+      //This returns a promise
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        renderNeighbor(data);
       });
   };
 
   getCountry(countryValue);
 });
 
-//   //Function to display the neighboring country
-//   const renderNeighbor = function (data) {
-//     //Values from the request
-//     const languages = Object.values(data.languages);
-//     const currencies = Object.values(data.currencies);
-
-//     //Adding the html for the country
-//     const html = `
-//               <div class="country-neighbor">
-//               <div class="flag-div-neighbor">
-//                   <img
-//                   src="${data.flags.svg}"
-//                   alt=""
-//                   class="flag"
-//                   />
-//               </div>
-//               <div class="country-info-neighbor">
-//                   <span class="country-name-neighbor">${data.name.common}</span>
-//                   <span class="continent">${data.continents}</span>
-//                   <p><span class="emoji">🧑🏼‍🤝‍🧑🏽</span><span class="population fax">${(
-//                     data.population / 1000000
-//                   ).toFixed(2)}M</span></p>
-//                   <p><span class="emoji">🗣️</span><span class="language fax">${
-//                     languages[0]
-//                   }</span></p>
-//                   <p><span class="emoji">💰</span><span class="currency fax">${
-//                     currencies[0].name
-//                   }</span></p>
-//               </div>
-//               </div>`;
-
-//     //Insert html into the container
-//     containerForCountries.insertAdjacentHTML("beforeend", html);
-//   };
 //   const getCountry = function (country) {
 //     //Creating the http request
 //     const request = new XMLHttpRequest();
