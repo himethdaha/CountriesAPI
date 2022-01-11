@@ -119,3 +119,33 @@ html {
   font-size: 2rem;
   font-weight: 500;
 }
+
+.alert {
+  display: none;
+  padding: 1.4rem;
+  background-color: #f44336;
+  color: #fff;
+  margin-bottom: 1.6rem;
+}
+
+.cont {
+  display: flex;
+  justify-content: space-between;
+}
+
+.alert-message {
+  font-size: 1.4rem;
+}
+
+.close-btn {
+  margin-left: 1.6rem;
+  font-weight: bold;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: all 0.5s;
+  justify-content: end;
+}
+
+.close-btn:hover {
+  color: #000;
+}

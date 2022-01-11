@@ -5,30 +5,33 @@ const countryDiv = document.querySelector(".country");
 const checkCountry = document.querySelector(".btn");
 let countryValue;
 const countryForm = document.querySelector(".country-form");
+const alertbox = document.querySelector(".alert");
+const message = document.querySelector(".alert-message");
+const alertclose = document.querySelector(".close-btn");
 
 //On form submit
 checkCountry.addEventListener("click", function () {
   //Get the value inside the input form
   countryValue = document.getElementById("country-txts").value;
   //Validate the input
-  if (countryValue.length === 0 || !isNaN(+countryValue)) {
-    alert("Enter a country dummy 🥺");
-  }
-  //Make the container visible
-  containerForCountries.style.opacity = 1;
+  //   if (countryValue.length === 0 || !isNaN(+countryValue)) {
+  //     alert("Enter a country dummy 🥺");
+  //   }
 
-  //Function to display the main country
-  const renderCountry = function (data) {
-    //Destructing the data obj
-    const [destdata] = data;
-    //Values from the request
-    const languages = Object.values(destdata.languages);
-    const currencies = Object.values(destdata.currencies).map(
-      (curr) => curr.name
-    );
+  getCountry(countryValue);
+});
+//Function to display the main country
+const renderCountry = function (data) {
+  //Destructing the data obj
+  const [destdata] = data;
+  //Values from the request
+  const languages = Object.values(destdata.languages);
+  const currencies = Object.values(destdata.currencies).map(
+    (curr) => curr.name
+  );
 
-    //     //Adding the html for the country
-    const html = `
+  //     //Adding the html for the country
+  const html = `
               <div class="country">
               <div class="flag-div">
                   <img
@@ -51,22 +54,22 @@ checkCountry.addEventListener("click", function () {
               </div>
               </div>`;
 
-    //Insert html into the container
-    containerForCountries.insertAdjacentHTML("beforeend", html);
-  };
+  //Insert html into the container
+  containerForCountries.insertAdjacentHTML("beforeend", html);
+};
 
-  //   //Function to display the neighboring country
-  const renderNeighbor = function (data) {
-    //Destructing the data obj
-    const [destdata] = data;
-    //Values from the request
-    const languages = Object.values(destdata.languages);
-    const currencies = Object.values(destdata.currencies).map(
-      (curr) => curr.name
-    );
+//   //Function to display the neighboring country
+const renderNeighbor = function (data) {
+  //Destructing the data obj
+  const [destdata] = data;
+  //Values from the request
+  const languages = Object.values(destdata.languages);
+  const currencies = Object.values(destdata.currencies).map(
+    (curr) => curr.name
+  );
 
-    //Adding the html for the country
-    const html = `
+  //Adding the html for the country
+  const html = `
               <div class="country-neighbor">
               <div class="flag-div-neighbor">
                   <img
@@ -86,51 +89,68 @@ checkCountry.addEventListener("click", function () {
                   <p><span class="emoji">🚩</span><span class="capital fax">${
                     destdata.capital
                   }</span></p>
-                  <p><span class="emoji">🗣️</span><span class="language fax">${
-                    languages[0]
-                  }</span></p>
-                  <p><span class="emoji">💰</span><span class="currency fax">${
-                    currencies[0].name
-                  }</span></p>
+                  <p><span class="emoji">🗣️</span><span class="language fax">${languages}</span></p>
+                  <p><span class="emoji">💰</span><span class="currency fax">${currencies}</span></p>
               </div>
               </div>`;
 
-    //Insert html into the container
-    containerForCountries.insertAdjacentHTML("beforeend", html);
-  };
+  //Insert html into the container
+  containerForCountries.insertAdjacentHTML("beforeend", html);
+};
 
-  ////////////////// USING PROMISES///////////////
-  //using fetch api
-  //Using a promise to get the country
-  const getCountry = function (country) {
+////////////////// USING PROMISES///////////////
+//using fetch api
+//Using a promise to get the country
+const getCountry = function (country) {
+  //This returns a promise
+  fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(function (response) {
+      //Check if the field is blank or is a number
+      if (countryValue.length === 0 || !isNaN(+countryValue)) {
+        throw new Error(`Enter a country dummy 🥺🥺`);
+      }
+      //Check the status code
+      if (!response.ok) {
+        throw new Error(`Country Not Found (${response.status})`);
+      }
+      //To read the response use JSON. which also returns a promise
+      return response.json();
+    })
+    //Since the json methodreturns a promise I can use 'then' on the entire callback function
+    .then(function (data) {
+      renderCountry(data);
+      console.log(data);
+
+      //For countries without neighbors
+      if (!("borders" in data === true)) {
+        throw new Error("No neighboring countries but that's okay 🙂");
+      }
+      //Get the neighboring country from the array of objs
+      const neighbor = data[0].borders[0];
+      //Return the neighboring country
+      return fetch(`https://restcountries.com/v3.1/alpha/${neighbor}`);
+    })
     //This returns a promise
-    fetch(`https://restcountries.com/v3.1/name/${country}`)
-      .then(function (response) {
-        //To read the response use JSON. which also returns a promise
-        return response.json();
-      })
-      //Since the json methodreturns a promise I can use 'then' on the entire callback function
-
-      .then(function (data) {
-        renderCountry(data);
-        //Get the neighboring country from the array of objs
-        const neighbor = data[0].borders[0];
-        if (!neighbor) return;
-
-        //Return the neighboring country
-        return fetch(`https://restcountries.com/v3.1/alpha/${neighbor}`);
-      })
-      //This returns a promise
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        renderNeighbor(data);
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      renderNeighbor(data);
+    })
+    //Catch an error
+    .catch(function (err) {
+      alertbox.style.display = "block";
+      message.textContent = `${err.message}.`;
+      alertclose.addEventListener("click", function () {
+        alertbox.style.display = "none";
       });
-  };
-
-  getCountry(countryValue);
-});
+    })
+    //Since catch it self returns a promise. I can use this here
+    .finally(function () {
+      //Make the container visible
+      containerForCountries.style.opacity = 1;
+    });
+};
 
 //   const getCountry = function (country) {
 //     //Creating the http request
