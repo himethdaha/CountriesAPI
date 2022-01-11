@@ -2,21 +2,45 @@
 
 const containerForCountries = document.querySelector(".container");
 const countryDiv = document.querySelector(".country");
-const checkCountry = document.querySelector(".btn");
+const checkCountrySubmit = document.querySelector(".btn");
 let countryValue;
 const countryForm = document.querySelector(".country-form");
+const coordsSubmit = document.querySelector(".btn-coords");
 const alertbox = document.querySelector(".alert");
 const message = document.querySelector(".alert-message");
 const alertclose = document.querySelector(".close-btn");
+const searchbyName = document.querySelector(".name-search");
+const searchbyCoords = document.querySelector(".coords-search");
+const checkCountryForm = document.querySelector(".country-form");
+const getCoordsForm = document.querySelector(".coordinates-form");
+const drop = document.querySelector(".drop-btn");
+const mydrop = document.querySelector(".my-dropdown");
+
+//Show all the options when clicking the dropdown
+drop.addEventListener("click", function () {
+  mydrop.style.display = "block";
+});
+
+//Show the search by name form when clicking the button in the dropdown
+searchbyName.addEventListener("click", function () {
+  checkCountryForm.style.display = "block";
+  getCoordsForm.style.display = "none";
+  mydrop.style.display = "none";
+});
+
+//Show the search by coords form when clicking the button in the dropdown
+getCoordsForm.addEventListener("click", function () {
+  getCoords.style.display = "block";
+  checkCountryForm.style.display = "none";
+  mydrop.style.display = "none";
+});
+
+//On coords form submit
 
 //On form submit
-checkCountry.addEventListener("click", function () {
+checkCountrySubmit.addEventListener("click", function () {
   //Get the value inside the input form
   countryValue = document.getElementById("country-txts").value;
-  //Validate the input
-  //   if (countryValue.length === 0 || !isNaN(+countryValue)) {
-  //     alert("Enter a country dummy 🥺");
-  //   }
 
   getCountry(countryValue);
 });
@@ -119,12 +143,12 @@ const getCountry = function (country) {
     //Since the json methodreturns a promise I can use 'then' on the entire callback function
     .then(function (data) {
       renderCountry(data);
-      console.log(data);
 
       //For countries without neighbors
-      if (!("borders" in data === true)) {
+      if (!("borders" in data[0] === true)) {
         throw new Error("No neighboring countries but that's okay 🙂");
       }
+
       //Get the neighboring country from the array of objs
       const neighbor = data[0].borders[0];
       //Return the neighboring country

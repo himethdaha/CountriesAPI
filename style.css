@@ -71,6 +71,16 @@ html {
   display: block;
   gap: 1rem;
   margin: 3.2rem 60rem;
+  display: none;
+}
+.coordinates-form {
+  border: 1px solid rgba(0, 0, 0, 0.349);
+  padding: 1.2rem;
+  font-size: 2.4rem;
+  display: block;
+  gap: 1rem;
+  margin: 3.2rem 60rem;
+  display: none;
 }
 
 .emoji {
@@ -148,4 +158,46 @@ html {
 
 .close-btn:hover {
   color: #000;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.drop-btn {
+  background-color: #f76707;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  padding: 1.2rem;
+  transition: all 0.5s;
+}
+
+.drop-btn:hover {
+  background-color: #fd7e14;
+}
+
+.my-dropdown {
+  display: none;
+  position: absolute;
+  background-color: #ced4da;
+  border: none;
+}
+
+.my-dropdown button {
+  text-decoration: none;
+  display: block;
+  color: #000;
+  font-size: 1.1rem;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.my-dropdown button:hover {
+  background-color: #f8f9fa;
+}
+
+.show-links {
+  display: block;
 }

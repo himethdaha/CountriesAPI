@@ -14,6 +14,16 @@
         <span class="close-btn">&times;</span>
       </div>
     </div>
+    <div class="dropdown">
+      <button class="drop-btn" type="button">Click to see options</button>
+      <div class="my-dropdown">
+        <button class="own">Lookup your own country</button>
+        <button class="name-search">Search for any country by name</button>
+        <button class="coords-search">
+          Search for any country by coordinates
+        </button>
+      </div>
+    </div>
     <form class="country-form">
       <label for="country-name-form">Country</label>
       <input
@@ -23,6 +33,23 @@
         placeholder="Enter Country Name"
       />
       <button class="btn" type="button">Submit</button>
+    </form>
+    <form class="coordinates-form">
+      <label for="longitude-label">Longitude</label>
+      <input
+        type="text"
+        name="longitude-txt"
+        id="longitude-txts"
+        placeholder="Enter longitude coordinates"
+      />
+      <label for="latitude-label">Latitude</label>
+      <input
+        type="text"
+        name="latitude-txt"
+        id="latitude-txts"
+        placeholder="Enter latitude coordinates"
+      />
+      <button class="btn btn-coords" type="button">Submit</button>
     </form>
     <div class="container">
       <!-- <div class="country">
