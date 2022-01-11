@@ -16,6 +16,7 @@ const getCoordsForm = document.querySelector(".coords-search");
 const getCoords = document.querySelector(".coordinates-form");
 const drop = document.querySelector(".drop-btn");
 const mydrop = document.querySelector(".my-dropdown");
+const usersCountry = document.querySelector(".own");
 let lng;
 let lat;
 let link = [];
@@ -136,45 +137,6 @@ const renderNeighbor = function (data) {
   containerForCountries.insertAdjacentHTML("beforeend", html);
 };
 
-//Function to display the main country
-const renderCountrybyCoords = function (data) {
-  //Destructing the data obj
-  const [destdata] = data;
-  console.log(destdata);
-  //Values from the request
-  const languages = Object.values(destdata.languages);
-  const currencies = Object.values(destdata.currencies).map(
-    (curr) => curr.name
-  );
-
-  //     //Adding the html for the country
-  const html = `
-                <div class="country">
-                <div class="flag-div">
-                    <img
-                    src="${destdata.flags.svg}"
-                    alt=""
-                    class="flag"
-                    />
-                </div>
-                <div class="country-info">
-                    <span class="country-name">${destdata.name.common}</span>
-                    <span class="continent">${destdata.continents}</span>
-                    <p><span class="emoji">🧑🏼‍🤝‍🧑🏽</span><span class="population fax">${(
-                      destdata.population / 1000000
-                    ).toFixed(2)}M</span></p>
-                    <p><span class="emoji">🚩</span><span class="capital fax">${
-                      destdata.capital
-                    }</span></p>
-                    <p><span class="emoji">🗣️</span><span class="language fax">${languages}</span></p>
-                    <p><span class="emoji">💰</span><span class="currency fax">${currencies}</span></p>
-                </div>
-                </div>`;
-
-  //Insert html into the container
-  containerForCountries.insertAdjacentHTML("beforeend", html);
-};
-
 ////////////////// USING PROMISES///////////////
 //For the coords
 const getCountrybyCoords = function (lat, lng) {
@@ -264,6 +226,26 @@ const getCountrybyCoords = function (lat, lng) {
     });
 };
 
+//To get the users country
+usersCountry.addEventListener("click", function () {
+  //Receive the position of the user
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      //destruct lat and lng to seperate variables
+      const { latitude } = position.coords;
+      const { longitude } = position.coords;
+      console.log(latitude, longitude);
+
+      getCountrybyCoords(latitude, longitude);
+    });
+  } else {
+    alertbox.style.display = "block";
+    message.textContent = `You don't live in this planet 👽.`;
+    alertclose.addEventListener("click", function () {
+      alertbox.style.display = "none";
+    });
+  }
+});
 ////////////////// USING PROMISES///////////////
 //using fetch api
 //Using a promise to get the country
