@@ -175,6 +175,7 @@ const renderCountrybyCoords = function (data) {
   containerForCountries.insertAdjacentHTML("beforeend", html);
 };
 
+////////////////// USING PROMISES///////////////
 //For the coords
 const getCountrybyCoords = function (lat, lng) {
   //using fetch api
@@ -247,23 +248,21 @@ const getCountrybyCoords = function (lat, lng) {
         console.log(data[i]);
         renderNeighbor(data[i]);
       }
-      //   renderCountrybyCoords(data);
     })
-    // .then(function (response) {
-    //   console.log(response);
-    //   return response.json();
-    // })
-    // .then(function (data) {
-    //   console.log(data);
-    //})
+    //Error handling
+    .catch(function (err) {
+      alertbox.style.display = "block";
+      message.textContent = `${err.message}.`;
+      alertclose.addEventListener("click", function () {
+        alertbox.style.display = "none";
+      });
+    })
+
     //Making the container for the information visibile
     .finally(function () {
       containerForCountries.style.opacity = 1;
     });
-  //Render the html for the neighboring country
 };
-//52.508
-//13.381
 
 ////////////////// USING PROMISES///////////////
 //using fetch api
