@@ -17,6 +17,8 @@ const getCoords = document.querySelector(".coordinates-form");
 const drop = document.querySelector(".drop-btn");
 const mydrop = document.querySelector(".my-dropdown");
 const usersCountry = document.querySelector(".own");
+const clearBtn = document.querySelector(".btn-clear-country");
+const clearCoords = document.querySelector(".btn-clear-coords");
 let lng;
 let lat;
 let link = [];
@@ -27,10 +29,19 @@ drop.addEventListener("click", function () {
   mydrop.style.display = "block";
 });
 
+//Clear everything on button clear for country form
+clearBtn.addEventListener("click", function () {
+  document.getElementById("country-txts").value = "";
+});
+//Clear everything on button clear for coords form
+clearCoords.addEventListener("click", function () {
+  document.getElementById("latitude-txts").value = "";
+  document.getElementById("longitude-txts").value = "";
+});
 //Show the search by name form when clicking the button in the dropdown
 searchbyName.addEventListener("click", function () {
   checkCountryForm.style.display = "block";
-  getCoordsForm.style.display = "none";
+  getCoords.style.display = "none";
   mydrop.style.display = "none";
 });
 
@@ -98,9 +109,8 @@ const renderCountry = function (data) {
 
 //   //Function to display the neighboring country
 const renderNeighbor = function (data) {
-  console.log(data); //Destructing the data obj
+  //Destructing the data obj
   const [destdata] = data;
-
   //Values from the request
   const languages = Object.values(destdata.languages);
   const currencies = Object.values(destdata.currencies).map(
@@ -238,6 +248,11 @@ usersCountry.addEventListener("click", function () {
 
       getCountrybyCoords(latitude, longitude);
     });
+
+    //Clear forms
+    getCoords.style.display = "none";
+    mydrop.style.display = "none";
+    checkCountryForm.style.display = "none";
   } else {
     alertbox.style.display = "block";
     message.textContent = `You don't live in this planet 👽.`;
